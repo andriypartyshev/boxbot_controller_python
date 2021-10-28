@@ -1,0 +1,34 @@
+<launch>
+
+<!--     <arg name="vehicle_controller_ip" default="192.168.200.10" /> -->
+<!--     <arg name="vehicle_controller_port" default="80" /> -->
+<!--     <arg name="joy_port" default="/dev/input/js0" /> -->
+<!--     <arg name="max_joy_velocity" default="1.0" /> -->
+<!--     <arg name="max_joy_steering_angle" default="1.0" /> -->
+<!--     <arg name="steering_interpolation_factor" default="1.0" /> -->
+<!--     <arg name="steering_offset" default="0" /> -->
+
+<!--     <node name="joy_node" pkg="joy" type="joy_node"> -->
+<!--         <param name="dev" type="string" value="$(arg joy_port)" /> -->
+<!--     </node> -->
+<!--     <node name="vehicle_controller" pkg="vehicle_controller" type="vehicle_controller"> -->
+<!--         <param name="control_command_topic" value="ctrl_cmd_from_joy" /> -->
+<!--         <param name="controller_ip" value="$(arg vehicle_controller_ip)" /> -->
+<!--         <param name="controller_port" value="$(arg vehicle_controller_port)" /> -->
+<!--         <param name="steering_interpolation_factor" value="$(arg steering_interpolation_factor)" /> -->
+<!--         <param name="steering_offset" value="$(arg steering_offset)" /> -->
+<!--     </node> -->
+    <rosparam param="wheel_control_topics">{"left":"/control/wheel/left","right":"/control/wheel/right"}</rosparam>
+    <rosparam param="wheel_feedback_topics">{"left":"/vehicle_decoder/left_wheel_velocity","right":"/vehicle_decoder/right_wheel_velocity"}</rosparam>
+    <rosparam param="auto_control_topics">{"linear":"/control/auto/linear","angular":"/control/auto/angular"}</rosparam>
+    <rosparam param="control_multipliers">{"auto":{"linear": 0, "angular": 0},"manual":{"linear": 1000, "angular": 750}}</rosparam>
+    <rosparam param="control_convert_topic">"/ctrl_cmd_from_joy"</rosparam>
+    <rosparam param="cam_takeover_status_topic">"/control/cam/takeover"</rosparam>
+
+    <node name="CommandConverter" pkg="vehicle_controller_python" type="PyControllCommandConverter.py" output="screen">
+
+    </node>
+    <node name="Controller" pkg="vehicle_controller_python" type="PyController.py" output="screen">
+
+    </node>
+</launch>
